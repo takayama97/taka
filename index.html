@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebARtest</title>
+  </head>
+  
+  <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  
+  <body style="margin: 10px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <a-asset-item id="obj-m" src="yado.obj"></a-asset-item>   <!-- objファイル -->
+        <a-asset-item id="mtl-m" src="yado.mtl"></a-asset-item>   <!-- mtlファイル -->
+      </a-assets>
+      
+      <a-marker type="pattern" url="pattern-yado.patt">
+        <a-obj-model src="#obj-m" mtl="#mtl-m" rotation="-90 180 180"></a-obj-model>
+      </a-marker>
+      
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
