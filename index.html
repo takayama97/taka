@@ -12,15 +12,10 @@
       <a-assets>
         <a-asset-item id="obj-m" src="yado.obj"></a-asset-item>   <!-- objファイル -->
         <a-asset-item id="mtl-m" src="yado.mtl"></a-asset-item>   <!-- mtlファイル -->
-        <a-asset-item id="obj-d" src="ARduck.obj"></a-asset-item>   <!-- objファイル -->
-        <a-asset-item id="mtl-d" src="ARduck.mtl"></a-asset-item>   <!-- mtlファイル -->
       </a-assets>
       
       <a-marker type="pattern" url="pattern-yado.patt">
         <a-obj-model src="#obj-m" mtl="#mtl-m" rotation="-90 180 180"></a-obj-model>
-      </a-marker>
-      <a-marker type="pattern" url="pattern-duck.patt">
-        <a-obj-model src="#obj-d" mtl="#mtl-d" rotation="-90 180 180"></a-obj-model>
       </a-marker>
       
       <a-entity camera></a-entity>
