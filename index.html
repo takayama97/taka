@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebAR AR_Yado</title>
+    <title>WebAR AR_Yado (Loading対応)</title>
     <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
     <!-- AR.js -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <style>
+      #loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: white;
+        background: rgba(0,0,0,0.5);
+        padding: 10px 20px;
+        border-radius: 10px;
+        z-index: 9999;
+      }
+    </style>
   </head>
 
-  <body style="margin:0; overflow:hidden;">
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false">
+  <body style="margin:0; overflow:hidden; background:black;">
+    <!-- Loading表示 -->
+    <div id="loading">Loading 3D Model...</div>
 
-      <!-- OBJ/MTLの事前読み込み -->
-      <a-assets>
-        <a-asset-item id="obj-d" src="https://github.com/takayama97/taka/blob/AR/AR_yado.obj?raw=true"></a-asset-item>
-        <a-asset-item id="mtl-d" src="https://github.com/takayama97/taka/blob/AR/AR_yado.mtl?raw=true"></a-asset-item>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false"
+             loading-screen="enabled: false">
+
+      <!-- GitHub raw URL から OBJ/MTL と pattern を読み込む -->
+      <a-assets timeout="60000">
+        <a-asset-item id="obj-d" src="https://github.com/takayama97/taka/raw/AR/AR_yado.obj"></a-asset-item>
+        <a-asset-item id="mtl-d" src="https://github.com/takayama97/taka/raw/AR/AR_yado.mtl"></a-asset-item>
+        <a-asset-item id="pattern-yado" src="https://github.com/takayama97/taka/raw/AR/pattern-yado.patt"></a-asset-item>
       </a-assets>
 
-
       <!-- マーカー上にOBJモデルを表示 -->
-      <a-marker type="pattern" url="pattern-yado.patt">
+      <a-marker type="pattern" url="#pattern-yado">
         <a-obj-model 
           src="#obj-d" 
           mtl="#mtl-d" 
           position="0 0 0"
           rotation="-90 180 180" 
-          scale="0.1 0.1 0.1">
+          scale="0.1 0.1 0.1"
+          id="yado-model">
         </a-obj-model>
       </a-marker>
 
@@ -33,5 +52,14 @@
       <a-entity camera></a-entity>
 
     </a-scene>
+
+    <script>
+      // すべてのアセットが読み込まれたらLoadingを消す
+      const scene = document.querySelector('a-scene');
+      scene.addEventListener('loaded', () => {
+        const loadingDiv = document.getElementById('loading');
+        if (loadingDiv) loadingDiv.style.display = 'none';
+      });
+    </script>
   </body>
 </html>
