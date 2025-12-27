@@ -1,65 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebAR AR_Yado (Loading対応)</title>
-    <!-- A-Frame -->
-    <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
-    <!-- AR.js -->
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-    <style>
-      #loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 24px;
-        color: white;
-        background: rgba(0,0,0,0.5);
-        padding: 10px 20px;
-        border-radius: 10px;
-        z-index: 9999;
-      }
-    </style>
+    <title>WebXR Plane Detection AR</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   </head>
-
-  <body style="margin:0; overflow:hidden; background:black;">
-    <!-- Loading表示 -->
-    <div id="loading">Loading 3D Model...</div>
-
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false"
-             loading-screen="enabled: false">
-
-      <!-- GitHub raw URL から OBJ/MTL と pattern を読み込む -->
-      <a-assets timeout="180000">
-        <a-asset-item id="obj-d" src="https://drive.google.com/file/d/1Vl-4SKVV2X_pBMpq3vVmzU3MOL9YUvNv/view"></a-asset-item>
-        <a-asset-item id="mtl-d" src="https://drive.google.com/file/d/1VvoH-5ToEdvqICafFdeVApP182iHkfDA/view"></a-asset-item>
-        <a-asset-item id="pattern-yado" src="https://drive.google.com/file/d/1cSoIgVFcCcjseOrKIcMS-d4j-2jkIbsI/view"></a-asset-item>
-      </a-assets>
-
-      <!-- マーカー上にOBJモデルを表示 -->
-      <a-marker type="pattern" url="#pattern-yado">
-        <a-obj-model 
-          src="#obj-d" 
-          mtl="#mtl-d" 
-          position="0 0 0"
-          rotation="-90 180 180" 
-          scale="0.1 0.1 0.1"
-          id="yado-model">
-        </a-obj-model>
-      </a-marker>
-
+  <body style="margin:0; overflow:hidden;">
+    <a-scene
+      xrweb="optionalFeatures: hit-test"
+      vr-mode-ui="enabled: false"
+      embedded
+      renderer="antialias: true; colorManagement: true;"
+      arjs="trackingMethod: best; debugUIEnabled: false"
+    >
       <!-- カメラ -->
-      <a-entity camera></a-entity>
+      <a-entity camera position="0 1.6 0"></a-entity>
 
+      <!-- クリックやタップで平面にオブジェクトを置く -->
+      <a-entity id="placer"></a-entity>
+
+      <script>
+        const scene = document.querySelector("a-scene");
+        let placed = false;
+
+        // タップ/クリック時にオブジェクトを平面に配置
+        scene.addEventListener("click", async () => {
+          if (placed) return; // 1回だけ
+          const camera = document.querySelector("[camera]").object3D;
+
+          // 簡易的にカメラ前方に配置
+          const box = document.createElement("a-box");
+          box.setAttribute("position", "0 0 -1"); // カメラ前1m
+          box.setAttribute("rotation", "0 45 0");
+          box.setAttribute("color", "red");
+          box.setAttribute("scale", "0.2 0.2 0.2");
+          document.querySelector("#placer").appendChild(box);
+
+          placed = true;
+        });
+      </script>
     </a-scene>
-
-    <script>
-      // すべてのアセットが読み込まれたらLoadingを消す
-      const scene = document.querySelector('a-scene');
-      scene.addEventListener('loaded', () => {
-        const loadingDiv = document.getElementById('loading');
-        if (loadingDiv) loadingDiv.style.display = 'none';
-      });
-    </script>
   </body>
 </html>
