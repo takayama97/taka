@@ -37,7 +37,8 @@
       </a-assets>
 
       <!-- マーカー上にOBJモデルを表示 -->
-      <a-marker type="pattern" url="#pattern-yado">
+      <a-marker type="pattern" url="https://github.com/takayama97/taka/releases/download/untagged-1acd87461f0e4104f24f/pattern-yado.patt">
+
         <a-obj-model 
           src="#obj-d" 
           mtl="#mtl-d" 
@@ -55,11 +56,11 @@
 
     <script>
       // すべてのアセットが読み込まれたらLoadingを消す
-      const scene = document.querySelector('a-scene');
-      scene.addEventListener('loaded', () => {
-        const loadingDiv = document.getElementById('loading');
-        if (loadingDiv) loadingDiv.style.display = 'none';
+      const assets = document.querySelector('a-assets');
+      assets.addEventListener('loaded', () => {
+        document.getElementById('loading').style.display = 'none';
       });
+
     </script>
   </body>
 </html>
