@@ -1,24 +1,96 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>WebARtest</title>
-  </head>
-  
-  <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  
-  <body style="margin: 10px; overflow: hidden;">
-    <a-scene embedded arjs>
-      <a-assets>
-        <a-asset-item id="obj-d" src="ARduck.obj"></a-asset-item>   <!-- objファイル -->
-        <a-asset-item id="mtl-d" src="ARduck.mtl"></a-asset-item>   <!-- mtlファイル -->
-      </a-assets>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>AR Yado</title>
 
-      <a-marker type="pattern" url="pattern-yado.patt">
-        <a-obj-model src="#obj-d" mtl="#mtl-d" rotation="-90 180 180"></a-obj-model>
-      </a-marker>
-      
-      <a-entity camera></a-entity>
-    </a-scene>
-  </body>
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/build/three.min.js"></script>
+
+  <!-- AR.js -->
+  <script src="https://cdn.jsdelivr.net/npm/ar.js@3.3.2/three/build/ar-threex.js"></script>
+
+  <!-- OBJ / MTL Loader -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/MTLLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; }
+  </style>
+</head>
+
+<body>
+<script>
+  // シーン
+  const scene = new THREE.Scene();
+
+  // カメラ
+  const camera = new THREE.Camera();
+  scene.add(camera);
+
+  // レンダラー
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // ARソース
+  const arSource = new THREEx.ArToolkitSource({
+    sourceType: 'webcam',
+  });
+
+  arSource.init(() => {
+    arSource.onResize();
+    arSource.copySizeTo(renderer.domElement);
+  });
+
+  // ARコンテキスト
+  const arContext = new THREEx.ArToolkitContext({
+    cameraParametersUrl:
+      'https://cdn.jsdelivr.net/npm/ar.js@3.3.2/data/data/camera_para.dat',
+    detectionMode: 'mono',
+  });
+
+  arContext.init(() => {
+    camera.projectionMatrix.copy(arContext.getProjectionMatrix());
+  });
+
+  // マーカー
+  const markerRoot = new THREE.Group();
+  scene.add(markerRoot);
+
+  new THREEx.ArMarkerControls(arContext, markerRoot, {
+    type: 'pattern',
+    patternUrl: 'marker/pattern-yado.patt',
+  });
+
+  // OBJ + MTL 読み込み
+  const mtlLoader = new THREE.MTLLoader();
+  mtlLoader.setPath('model/');
+  mtlLoader.load('AR_yado.mtl', (materials) => {
+    materials.preload();
+
+    const objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials(materials);
+    objLoader.setPath('model/');
+    objLoader.load('AR_yado.obj', (object) => {
+
+      // サイズ調整（重要）
+      object.scale.set(0.05, 0.05, 0.05);
+      object.rotation.x = -Math.PI / 2;
+
+      markerRoot.add(object);
+    });
+  });
+
+  // ループ
+  function animate() {
+    requestAnimationFrame(animate);
+    if (arSource.ready) {
+      arContext.update(arSource.domElement);
+    }
+    renderer.render(scene, camera);
+  }
+  animate();
+</script>
+</body>
 </html>
