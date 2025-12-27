@@ -8,11 +8,17 @@
   <body style="margin:0; overflow:hidden;">
     <!-- webcamを明示的に指定 -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: true">
-      <!-- デバッグ用の赤い箱 -->
-      <a-marker type="pattern" url="pattern-yado.patt">
-        <a-box position="0 0.5 0" color="red" scale="0.5 0.5 0.5"></a-box>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
+  <a-assets>
+    <a-asset-item id="obj-d" src="AR_yado.obj"></a-asset-item>
+    <a-asset-item id="mtl-d" src="AR_yado.mtl"></a-asset-item>
+  </a-assets>
+
+  <a-marker type="pattern" url="pattern-yado.patt">
+    <a-obj-model src="#obj-d" mtl="#mtl-d" rotation="-90 180 180" scale="0.1 0.1 0.1"></a-obj-model>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
   </body>
 </html>
