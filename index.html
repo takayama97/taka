@@ -9,9 +9,13 @@
   
   <body style="margin: 10px; overflow: hidden;">
     <a-scene embedded arjs>
+      <a-assets>
+        <a-asset-item id="obj-m" src="https://23.gigafile.nu/0101-sf139337ddeeecd3eaa5dc2224f4098f0"></a-asset-item>   <!-- objファイル -->
+        <a-asset-item id="mtl-m" src="AR_yado.mtl"></a-asset-item>   <!-- mtlファイル -->
+      </a-assets>
       
-      <a-marker type="pattern" url="https://github.com/takayama97/taka/releases/download/untagged-1acd87461f0e4104f24f/pattern-yado.patt">
-        <a-obj-model src="https://github.com/takayama97/taka/releases/download/untagged-1acd87461f0e4104f24f/AR_yado.obj" mtl="https://github.com/takayama97/taka/releases/download/untagged-1acd87461f0e4104f24f/AR_yado.mtl" rotation="-90 180 180"></a-obj-model>
+      <a-marker type="pattern" url="pattern-yado.patt">
+        <a-obj-model src="#obj-m" mtl="#mtl-m" rotation="-90 180 180" scale="0.1 0.1 0.1"></a-obj-model>
       </a-marker>
       
       <a-entity camera></a-entity>
