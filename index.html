@@ -11,26 +11,14 @@
   <body style="margin:0; overflow:hidden;">
     <!-- ARシーン -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false">
-      
-      <!-- モデルを事前読み込み -->
-      <a-assets>
-        <a-asset-item id="obj-d" src="AR_yado.obj"></a-asset-item>
-        <a-asset-item id="mtl-d" src="AR_yado.mtl"></a-asset-item>
-      </a-assets>
+  <a-assets>
+    <a-asset-item id="obj-d" src="AR_yado.obj"></a-asset-item>
+    <a-asset-item id="mtl-d" src="AR_yado.mtl"></a-asset-item>
+  </a-assets>
 
-      <!-- マーカー上にOBJモデルを表示 -->
-      <a-marker type="pattern" url="pattern-yado.patt">
-        <a-obj-model 
-          src="#obj-d" 
-          mtl="#mtl-d" 
-          rotation="-90 180 180" 
-          scale="0.1 0.1 0.1">
-        </a-obj-model>
-      </a-marker>
+  <a-obj-model src="#obj-d" mtl="#mtl-d" position="0 0 -2" scale="0.1 0.1 0.1"></a-obj-model>
+  <a-entity camera></a-entity>
+</a-scene>
 
-      <!-- カメラ -->
-      <a-entity camera></a-entity>
-
-    </a-scene>
   </body>
 </html>
