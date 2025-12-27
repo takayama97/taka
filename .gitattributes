@@ -2,3 +2,4 @@
 yado.obj filter=lfs diff=lfs merge=lfs -text
 *.obj filter=lfs diff=lfs merge=lfs -text
 AR_yado.obj filter=lfs diff=lfs merge=lfs -text
+ARduck.obj filter=lfs diff=lfs merge=lfs -text
