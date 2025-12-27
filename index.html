@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>WebARtest</title>
+  <head>
+    <title>WebARtest</title>
+  </head>
+  
   <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-</head>
-
-<body style="margin:0; overflow:hidden;">
-  <a-scene embedded arjs>
-    <a-assets>
-      <a-asset-item id="obj-m" src="AR_yado.obj"></a-asset-item>
-      <a-asset-item id="mtl-m" src="AR_yado.mtl"></a-asset-item>
-    </a-assets>
-
-    <a-marker type="pattern" url="pattern-yado.patt">
-      <a-obj-model 
-        src="#obj-m"
-        mtl="#mtl-m"
-        rotation="-90 180 180"
-        scale="0.5 0.5 0.5">
-      </a-obj-model>
-    </a-marker>
-
-    <a-entity camera></a-entity>
-  </a-scene>
-</body>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  
+  <body style="margin: 10px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <a-asset-item id="obj-m" src="AR_yado.obj"></a-asset-item>   <!-- objファイル -->
+        <a-asset-item id="mtl-m" src="AR_yado.mtl"></a-asset-item>   <!-- mtlファイル -->
+      </a-assets>
+      
+      <a-marker type="pattern" url="pattern-yado.patt">
+        <a-obj-model src="#obj-m" mtl="#mtl-m" rotation="-90 180 180" scale"0.1 0.1 0.1"></a-obj-model>
+      </a-marker>
+      
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
 </html>
