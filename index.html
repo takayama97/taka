@@ -1,67 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>WebAR</title>
+  <head>
+    <title>WebARtest</title>
+  </head>
+  
   <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-
-  <style>
-    #loading {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      z-index: 9999;
-      text-align: center;
-    }
-  </style>
-</head>
-
-<body style="margin:0; overflow:hidden;">
-  <div id="loading">マーカーをカメラに映してください</div>
-
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false">
-
-    <a-marker
-      id="yadoMarker"
-      type="pattern"
-      url="pattern-yado.patt">
-
-      <a-obj-model
-        id="yadoModel"
-        src="ARduck.obj"
-        mtl="ARduck.mtl"
-        rotation="-90 180 180"
-        scale="0.1 0.1 0.1">
-      </a-obj-model>
-
-    </a-marker>
-
-    <a-entity camera></a-entity>
-  </a-scene>
-
-  <script>
-    const marker = document.getElementById('yadoMarker');
-    const model = document.getElementById('yadoModel');
-    const loading = document.getElementById('loading');
-
-    marker.addEventListener('markerFound', () => {
-      loading.innerText = '3Dモデルを読み込み中...';
-    });
-
-    model.addEventListener('model-loaded', () => {
-      loading.style.display = 'none';
-      console.log('model loaded');
-    });
-
-    marker.addEventListener('markerLost', () => {
-      loading.style.display = 'flex';
-      loading.innerText = 'マーカーをカメラに映してください';
-    });
-  </script>
-</body>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  
+  <body style="margin: 10px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <a-asset-item id="obj-d" src="ARduck.obj"></a-asset-item>   <!-- objファイル -->
+        <a-asset-item id="mtl-d" src="ARduck.mtl"></a-asset-item>   <!-- mtlファイル -->
+      </a-assets>
+      
+      <a-marker type="pattern" url="pattern-yado.patt">
+        <a-obj-model src="#obj-d" mtl="#mtl-d" rotation="-90 180 180"></a-obj-model>
+      </a-marker>
+      
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
 </html>
